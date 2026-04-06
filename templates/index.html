@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>カルテ</title>
+</head>
+<body>
+    <h1>顧客一覧</h1>
+    <a href="/add">顧客追加</a>
+    <ul>
+        {% for customer in customers %}
+            <li><a href="/customer/{{ customer[0] }}">{{ customer[1] }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

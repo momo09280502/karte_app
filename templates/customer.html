@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>カルテ</title>
+</head>
+<body>
+    <h1>{{ customer[1] }} の履歴</h1>
+
+    <a href="/add_record/{{ customer[0] }}">履歴追加</a>
+
+    <ul>
+        {% for r in records %}
+        
+        <li>
+            {% if ' / ' in r[3] %}
+                {% set parts = r[3].split(' / ') %}
+                {% set rgb = parts[1].strip('()').split(',') %}
+
+                <div style="
+                    width:20px;
+                    height:20px;
+                    background-color: rgb({{ rgb[0] }}, {{ rgb[1] }}, {{ rgb[2] }});
+                    display:inline-block;
+                    border-radius:50%;
+                    margin-right:8px;
+                "></div>
+
+                {{ parts[0] }}
+            {% else %}
+                {{ r[3] }}
+            {% endif %}
+
+            ｜日付: {{ r[2] }} ｜メモ: {{ r[4] }}
+        </li>
+
+
+        {% endfor %}
+    </ul>
+
+    <a href="/">戻る</a>
+</body>
+</html>
