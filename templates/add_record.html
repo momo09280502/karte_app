@@ -4,9 +4,7 @@
     <title>履歴追加</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0f172a">
-
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
-
     <style>
         body {
             background-color: #0f172a;
@@ -15,7 +13,6 @@
             margin: 0;
             padding: 20px;
         }
-
         .container {
             max-width: 500px;
             margin: 0 auto;
@@ -24,79 +21,97 @@
             border-radius: 16px;
             box-shadow: 0 6px 14px rgba(0,0,0,0.35);
         }
-
         h1 {
             text-align: center;
             margin-bottom: 24px;
         }
-
         label {
             display: block;
             margin-top: 14px;
             margin-bottom: 8px;
             font-weight: bold;
         }
-
-        input, textarea {
+        input[type="text"],
+        input[type="date"],
+        input[type="file"],
+        textarea {
             width: 100%;
+            box-sizing: border-box;
             padding: 12px;
             border-radius: 10px;
             border: none;
             background-color: #334155;
             color: white;
-            box-sizing: border-box;
+            font-size: 14px;
         }
-
         textarea {
             min-height: 100px;
+            resize: vertical;
         }
-
         .button {
             width: 100%;
             margin-top: 20px;
             padding: 14px;
+            border: none;
             border-radius: 12px;
             background-color: #475569;
             color: white;
-            border: none;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
         }
-
-        .button:hover {
-            background-color: #64748b;
-        }
-
         .back-link {
             display: inline-block;
             margin-top: 16px;
             color: #cbd5e1;
             text-decoration: none;
         }
+        #preview {
+            display: none;
+            width: 180px;
+            margin-top: 12px;
+            border-radius: 12px;
+        }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h1>履歴追加</h1>
 
         <form method="POST" enctype="multipart/form-data">
-            <label>日付</label>
-            <input type="date" name="date">
+            <label for="date">日付</label>
+            <input type="date" id="date" name="date">
 
-            <label>カラー剤</label>
-            <input type="text" name="color">
+            <label for="color">カラー剤</label>
+            <input type="text" id="color" name="color">
 
-            <label>メモ</label>
-            <textarea name="memo"></textarea>
+            <label for="memo">メモ</label>
+            <textarea id="memo" name="memo"></textarea>
 
-            <label>写真</label>
-            <input type="file" name="image">
+            <label for="image">写真</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <img id="preview" alt="画像プレビュー">
 
             <button type="submit" class="button">保存</button>
         </form>
 
-        <a href="/" class="back-link">← 戻る</a>
+        <a href="/customer/{{ customer_id }}" class="back-link">← 戻る</a>
     </div>
+
+    <script>
+        const imageInput = document.getElementById('image');
+        const preview = document.getElementById('preview');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+                preview.src = '';
+            }
+        });
+    </script>
 </body>
 </html>
