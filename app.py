@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_from_directory
 import sqlite3
 
 app = Flask(__name__)
@@ -40,13 +40,17 @@ def init_db():
             customer_id INTEGER,
             date TEXT,
             color TEXT,
-            memo TEXT
+            memo TEXT,
+            image_path TEXT
         )
     ''')
 
     conn.commit()
     conn.close()
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route('/')
 def index():
@@ -57,6 +61,9 @@ def index():
     conn.close()
     return render_template('index.html', customers=customers)
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory('uploads', filename)
 
 @app.route('/add_record/<int:customer_id>', methods=['GET', 'POST'])
 def add_record(customer_id):
@@ -73,7 +80,8 @@ def add_record(customer_id):
             file.save(filepath)
             dominant_color = get_dominant_color(filepath)
         else:
-            dominant_color = (0, 0, 0)
+            dominant_color = "(0, 0, 0)"
+            filepath = ""
 
         combined_color = f"{color} / {dominant_color}"
 
@@ -82,8 +90,8 @@ def add_record(customer_id):
         c = conn.cursor()
 
         c.execute(
-            'INSERT INTO records (customer_id, date, color, memo) VALUES (?, ?, ?, ?)',
-            (customer_id, date, combined_color, memo)
+            'INSERT INTO records (customer_id, date, color, memo, image_path) VALUES (?, ?, ?, ?, ?)',
+            (customer_id, date, combined_color, memo, filepath)
         )
 
         conn.commit()

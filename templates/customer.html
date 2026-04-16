@@ -31,6 +31,11 @@
             {% endif %}
 
             ｜日付: {{ r[2] }} ｜メモ: {{ r[4] }}
+
+            {% if r[5] %}
+                <br>
+                <img src="/uploads/{{ r[5].split('\\')[-1].split('/')[-1] }}" width="150">
+            {% endif %}
         </li>
 
 
