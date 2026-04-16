@@ -1,47 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>カルテ</title>
+    <title>履歴</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: 'Noto Sans JP', sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #1e293b;
+            padding: 12px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            margin-right: 10px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .record {
+            background-color: #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        img {
+            width: 180px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>{{ customer[1] }} の履歴</h1>
 
-    <a href="/add_record/{{ customer[0] }}">履歴追加</a>
+<h1 style="color:red;">テスト {{ customer[1] }}</h1>
 
-    <ul>
-        {% for r in records %}
-        
-        <li>
-            {% if ' / ' in r[3] %}
-                {% set parts = r[3].split(' / ') %}
-                {% set rgb = parts[1].strip('()').split(',') %}
+<a href="/add_record/{{ customer[0] }}" class="button">＋ 履歴追加</a>
+<a href="/" class="button">← 戻る</a>
 
-                <div style="
-                    width:20px;
-                    height:20px;
-                    background-color: rgb({{ rgb[0] }}, {{ rgb[1] }}, {{ rgb[2] }});
-                    display:inline-block;
-                    border-radius:50%;
-                    margin-right:8px;
-                "></div>
+{% for r in records %}
+<div class="record">
+    <div>日付: {{ r[2] }}</div>
+    <div>色: {{ r[3] }}</div>
+    <div>メモ: {{ r[4] }}</div>
 
-                {{ parts[0] }}
-            {% else %}
-                {{ r[3] }}
-            {% endif %}
+    {% if r[5] %}
+        <img src="/uploads/{{ r[5].split('\\')[-1].split('/')[-1] }}">
+    {% endif %}
+</div>
+{% endfor %}
 
-            ｜日付: {{ r[2] }} ｜メモ: {{ r[4] }}
-
-            {% if r[5] %}
-                <br>
-                <img src="/uploads/{{ r[5].split('\\')[-1].split('/')[-1] }}" width="150">
-            {% endif %}
-        </li>
-
-
-        {% endfor %}
-    </ul>
-
-    <a href="/">戻る</a>
 </body>
 </html>
