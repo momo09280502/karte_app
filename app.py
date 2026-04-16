@@ -81,17 +81,23 @@ def customer_detail(customer_id):
 @app.route('/add_record/<int:customer_id>', methods=['GET', 'POST'])
 def add_record(customer_id):
     if request.method == 'POST':
+        print("add_record started")
+
         date = request.form['date']
         color = request.form['color']
         memo = request.form['memo']
+        print("got form data")
 
         file = request.files.get('image')
+        print("got file")
 
         if file and file.filename != "":
             filename = file.filename
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
+            print("saved file")
             dominant_color = get_dominant_color(filepath)
+            print("got dominant color")
         else:
             dominant_color = "(0, 0, 0)"
             filepath = ""
@@ -100,12 +106,16 @@ def add_record(customer_id):
 
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
+        print("before insert")
+
         c.execute(
             'INSERT INTO records (customer_id, date, color, memo, image_path) VALUES (?, ?, ?, ?, ?)',
             (customer_id, date, combined_color, memo, filepath)
         )
+
         conn.commit()
         conn.close()
+        print("after insert")
 
         return redirect(f'/customer/{customer_id}')
 
