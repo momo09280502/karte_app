@@ -2,14 +2,67 @@
 <html>
 <head>
     <title>カルテ</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: 'Noto Sans JP', sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .button {
+            display: block;
+            background-color: #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .button:hover {
+            background-color: #334155;
+        }
+
+        .customer {
+            display: block;
+            background-color: #1e293b;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .customer:hover {
+            background-color: #334155;
+        }
+    </style>
 </head>
 <body>
+
     <h1>顧客一覧</h1>
-    <a href="/add">顧客追加</a>
-    <ul>
-        {% for customer in customers %}
-            <li><a href="/customer/{{ customer[0] }}">{{ customer[1] }}</a></li>
-        {% endfor %}
-    </ul>
+
+    <a href="/add" class="button">＋ 顧客追加</a>
+
+    {% for customer in customers %}
+        <a href="/customer/{{ customer[0] }}" class="customer">
+            {{ customer[1] }}
+        </a>
+    {% endfor %}
+
 </body>
 </html>
